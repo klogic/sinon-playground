@@ -1,5 +1,6 @@
 import sinon from "sinon";
 import * as util from "../../../src/util/util";
+import { updateInferTypeNode, updateTypeLiteralNode } from "typescript";
 const fs = require("fs");
 
 afterEach(() => {
@@ -35,5 +36,15 @@ describe("testFunction function Stub", () => {
   test("testFunction should return hello world", () => {
     sinon.stub(util, "testFunction").returns("hi world");
     expect(util.testFunction()).toEqual("hi world");
+  });
+});
+
+describe("testFunction function Mock", () => {
+  test("testFunction should return hello world", () => {
+    const mock = sinon.mock(util);
+    mock.expects("testFunction").twice().returns("hi world by mock");
+    util.testFunction();
+    expect(util.testFunction()).toEqual("hi world by mock");
+    mock.verify();
   });
 });
